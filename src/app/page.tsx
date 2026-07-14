@@ -15,8 +15,8 @@ export default function HomePage() {
         <p className="hero__sub">
           This is EveryTech&rsquo;s product hub: the single place every first-party tool the firm
           builds is launched and lives. Not slideware, production surfaces you can open right now.
-          First up is FranchiseIQ PH, a franchise-site scoring engine built entirely on open
-          Philippine government data.
+          First up is FranchiseIQ, a franchise-site scoring engine live in two markets (Philippines
+          and Malaysia) built entirely on open government data.
         </p>
         <div className="hero__cta">
           <Link className="btn" href="/franchiseiq">

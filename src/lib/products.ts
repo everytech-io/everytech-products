@@ -15,14 +15,14 @@ export type Product = {
 export const PRODUCTS: Product[] = [
   {
     slug: "franchiseiq",
-    name: "FranchiseIQ PH",
+    name: "FranchiseIQ",
     tagline: "Franchise-site location intelligence on open government data",
     excerpt:
-      "Score any Quezon City barangay 0 to 100 for a franchise format, or reverse it to rank the best format for a location. Built entirely on open Philippine government data (PSA, DPWH, OSM), keyed on PSGC codes.",
+      "Score any neighborhood 0 to 100 for a franchise format, or reverse it to rank the best format for a location. Two live markets: Philippines (Quezon City, PSGC-keyed) and Malaysia (Kuala Lumpur, DOSM-keyed), both on open government data.",
     status: "live",
-    statusLabel: "Live pilot",
+    statusLabel: "Live · PH + MY",
     href: "/franchiseiq",
-    meta: ["Geospatial", "Open gov data", "PSGC-keyed"],
+    meta: ["Geospatial", "Open gov data", "PH + MY"],
   },
   {
     slug: "intent-gate",
