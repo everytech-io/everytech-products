@@ -119,6 +119,45 @@ h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); font-weight: 600;
 .section-head__link:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .section__lead { color: var(--muted); max-width: 52rem; margin: 1.2rem 0 0; }
 
+/* ── App-store controls (search + use-case chips) ───────────────────────── */
+.store-controls { margin: 1.8rem 0 0.6rem; }
+.store-search {
+  display: flex; align-items: center; gap: 0.7rem;
+  background: var(--paper-pure); border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.15rem 0.6rem 0.15rem 1.05rem; transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.store-search:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200, 149, 25, 0.14); }
+.store-search__icon { color: var(--muted); flex: none; }
+.store-search__input {
+  flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink);
+  font-family: var(--sans); font-size: 1rem; padding: 0.85rem 0;
+}
+.store-search__input::placeholder { color: var(--faint); }
+.store-search__clear {
+  flex: none; border: 0; background: transparent; cursor: pointer;
+  color: var(--muted); font-size: 1.5rem; line-height: 1; padding: 0.2rem 0.55rem; border-radius: 999px;
+}
+.store-search__clear:hover { color: var(--ink); background: rgba(22, 20, 15, 0.05); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; }
+.chip {
+  cursor: pointer; font-family: var(--label); font-weight: 600; font-size: 0.78rem;
+  padding: 0.5rem 0.95rem; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--paper-pure); color: var(--muted); transition: all 0.15s ease;
+}
+.chip:hover { color: var(--gold-ink); border-color: var(--gold); }
+.chip--active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chip--active:hover { color: var(--paper); }
+
+.store-empty {
+  margin: 2rem 0 0; padding: clamp(1.6rem, 4vw, 2.4rem); text-align: center;
+  background: var(--paper-pure); border: 1px dashed var(--rule); border-radius: 14px;
+}
+.store-empty__title { font-family: var(--serif); font-size: 1.3rem; color: var(--ink); margin: 0 0 0.5rem; }
+.store-empty__body { color: var(--muted); max-width: 40rem; margin: 0 auto 1.3rem; }
+
+.pgrid-products { margin-top: 1.4rem; }
+
 /* ── Product grid (the products catalog) ────────────────────────────────── */
 .pgrid-products { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 0.4rem; }
 .pcard { border-bottom: 1px solid var(--rule); }

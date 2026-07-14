@@ -1,5 +1,20 @@
 export type ProductStatus = "live" | "in-development";
 
+/**
+ * Use-case categories a visitor browses the store by. Keep this list tight —
+ * every product tags itself with one or more of these, and the store landing
+ * renders them as filter chips. Order here is the order shown.
+ */
+export const USE_CASES = [
+  "Location & market intelligence",
+  "Retail & franchise",
+  "AI governance",
+  "Automation & agents",
+  "Open government data",
+] as const;
+
+export type UseCase = (typeof USE_CASES)[number];
+
 export type Product = {
   slug: string;
   name: string;
@@ -10,6 +25,10 @@ export type Product = {
   /** Internal route for a product detail page, when one exists. */
   href?: string;
   meta: string[];
+  /** Use-case categories this product answers; used by store search/filter. */
+  categories: UseCase[];
+  /** Extra free-text keywords the store search should match on. */
+  keywords: string[];
 };
 
 export const PRODUCTS: Product[] = [
@@ -23,6 +42,28 @@ export const PRODUCTS: Product[] = [
     statusLabel: "Live · PH + MY",
     href: "/franchiseiq",
     meta: ["Geospatial", "Open gov data", "PH + MY"],
+    categories: [
+      "Location & market intelligence",
+      "Retail & franchise",
+      "Open government data",
+    ],
+    keywords: [
+      "franchise",
+      "site selection",
+      "location scoring",
+      "neighborhood",
+      "barangay",
+      "quezon city",
+      "kuala lumpur",
+      "philippines",
+      "malaysia",
+      "psgc",
+      "dosm",
+      "catchment",
+      "expansion",
+      "store opening",
+      "geospatial",
+    ],
   },
   {
     slug: "intent-gate",
@@ -33,6 +74,18 @@ export const PRODUCTS: Product[] = [
     status: "in-development",
     statusLabel: "In development",
     meta: ["AI governance", "Evaluation"],
+    categories: ["AI governance"],
+    keywords: [
+      "rag",
+      "grounding",
+      "hallucination",
+      "compliance",
+      "eval",
+      "guardrail",
+      "prompt",
+      "content safety",
+      "intent spec",
+    ],
   },
   {
     slug: "receipt",
@@ -43,8 +96,25 @@ export const PRODUCTS: Product[] = [
     status: "in-development",
     statusLabel: "In development",
     meta: ["Agents", "Observability"],
+    categories: ["Automation & agents", "AI governance"],
+    keywords: [
+      "agent",
+      "workflow",
+      "pipeline",
+      "automation",
+      "audit trail",
+      "observability",
+      "orchestration",
+      "exception handling",
+      "ledger",
+    ],
   },
 ];
+
+/** Products carrying a given use-case category. */
+export function productsByUseCase(useCase: UseCase): Product[] {
+  return PRODUCTS.filter((p) => p.categories.includes(useCase));
+}
 
 export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
