@@ -52,8 +52,40 @@ function normalizeFormat(r: RawFormat): Format {
 
 // ── Sources ──────────────────────────────────────────────────────────────────
 
+function hasDatabaseUrl(): boolean {
+  return Boolean(process.env.DATABASE_URL);
+}
+
 function hasSupabaseEnv(): boolean {
   return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
+
+// Direct Postgres (Supabase connection string). Lazy singleton so the client is
+// created once and never bundled into the browser. `prepare: false` keeps it
+// compatible with Supabase's transaction pooler.
+let _sql: ReturnType<typeof import("postgres")> | null = null;
+async function getSql() {
+  if (!_sql) {
+    const { default: postgres } = await import("postgres");
+    _sql = postgres(process.env.DATABASE_URL!, { prepare: false, max: 3, idle_timeout: 20 });
+  }
+  return _sql;
+}
+
+async function loadFromPostgres(): Promise<Dataset> {
+  const sql = await getSql();
+  const [markets, locations, features, formats] = await Promise.all([
+    sql`select code, name from fiq_market`,
+    sql`select code, market, city, name, lat, lng from fiq_location`,
+    sql`select code, pop, dens, inc, tra, poi, comp from fiq_features`,
+    sql`select id, market, name, color, comp_key, weights, income_floor, anchor_weights from fiq_format`,
+  ]);
+  return {
+    markets: markets as unknown as Market[],
+    locations: locations as unknown as Location[],
+    features: features as unknown as Features[],
+    formats: (formats as unknown as RawFormat[]).map(normalizeFormat),
+  };
 }
 
 async function loadFromSupabase(): Promise<Dataset> {
@@ -117,7 +149,11 @@ let cache: { at: number; data: Promise<Dataset> } | null = null;
 function dataset(): Promise<Dataset> {
   const now = Date.now();
   if (cache && now - cache.at < TTL_MS) return cache.data;
-  const data = hasSupabaseEnv() ? loadFromSupabase() : Promise.resolve(loadFromFixture());
+  const data = hasDatabaseUrl()
+    ? loadFromPostgres()
+    : hasSupabaseEnv()
+      ? loadFromSupabase()
+      : Promise.resolve(loadFromFixture());
   cache = { at: now, data };
   // On failure, drop the cache so the next call retries.
   data.catch(() => {
@@ -126,7 +162,12 @@ function dataset(): Promise<Dataset> {
   return data;
 }
 
-/** For tests: which backend is active. */
+/** For tests/logging: which backend is active. */
+export function activeBackend(): "postgres" | "supabase" | "fixture" {
+  if (hasDatabaseUrl()) return "postgres";
+  if (hasSupabaseEnv()) return "supabase";
+  return "fixture";
+}
 export function usingSupabase(): boolean {
   return hasSupabaseEnv();
 }
