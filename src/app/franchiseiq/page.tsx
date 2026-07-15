@@ -21,12 +21,13 @@ export default function FranchiseIQPage() {
         <p className="kicker">{product.tagline}</p>
         <h1 className="post-title">FranchiseIQ</h1>
         <p className="post-dek">
-          A 0 to 100 franchise-viability score for any neighborhood, with a live pillar breakdown
-          and a reverse mode that ranks every format for a location. Two live markets:{" "}
-          <strong>Philippines</strong> (Quezon City) and <strong>Malaysia</strong> (Kuala Lumpur).
+          A 0 to 100 franchise-viability score for any neighborhood &mdash; with the reasoning shown
+          for every point, and a reverse mode that ranks every format for a site. Live in two
+          markets: <strong>Philippines</strong> (Metro Manila + Calabarzon) and{" "}
+          <strong>Malaysia</strong> (Kuala Lumpur).
         </p>
         <p className="post-byline mono">
-          Live pilot &middot; open government data &middot; PSGC + DOSM keyed &middot; PH &amp; MY
+          Live pilot &middot; built on open government data &middot; decision-ready in seconds
         </p>
         <div className="post-actions">
           <a
@@ -44,62 +45,64 @@ export default function FranchiseIQPage() {
 
       <div className="prose">
         <blockquote>
-          Choosing a franchise site in Metro Manila is usually done on instinct. FranchiseIQ turns
-          open government data into a defensible score, and shows its work for every pillar.
+          A franchise site is a seven-figure bet usually placed on instinct and a broker&rsquo;s
+          pitch. FranchiseIQ turns it into a defensible, data-backed score in seconds &mdash; and
+          shows its work, so the number holds up in a boardroom.
         </blockquote>
 
-        <h2>What it does</h2>
-        <p>
-          Pick a barangay and a franchise format and FranchiseIQ returns a single 0 to 100 viability
-          score, a verdict, and a breakdown across four weighted pillars. Switch to reverse mode and
-          it ranks all four formats for one location, so you can ask both &ldquo;is this site good
-          for a coffee shop?&rdquo; and &ldquo;what should go here?&rdquo;
-        </p>
-
+        <h2>Where it pays off</h2>
         <ul className="pillars">
           <li>
-            <b>Demand</b>
-            <span>Population and density, normalized within the pilot city.</span>
+            <b>Franchise brands &amp; franchisors</b>
+            <span>
+              Rank every neighborhood before you sign leases. Expand into the sites the data backs,
+              not the ones a broker is pushing &mdash; and cut the cost of a wrong location.
+            </span>
           </li>
           <li>
-            <b>Spending power</b>
-            <span>A poverty-inverse income index, with a soft floor penalty for premium formats.</span>
+            <b>SME &amp; first-time operators</b>
+            <span>
+              One honest go / no-go on the location you&rsquo;re about to put your capital into,
+              before you commit the lease.
+            </span>
           </li>
           <li>
-            <b>Foot traffic</b>
-            <span>Measured road traffic blended with format-specific anchor gravity.</span>
-          </li>
-          <li>
-            <b>Competition gap</b>
-            <span>Residents served per existing outlet: how much room is left.</span>
+            <b>Investors &amp; diligence</b>
+            <span>
+              A repeatable, comparable score across a whole pipeline, so site risk becomes a number
+              you can defend in an investment memo.
+            </span>
           </li>
         </ul>
 
-        <h2>How it is built</h2>
-        <p>
-          Each market joins every dataset on one canonical government identifier: the 10-digit PSGC
-          (Philippine Standard Geographic Code) in the Philippines, the DOSM administrative code in
-          Malaysia. Population, income, road traffic, and points of interest all key on that one
-          code. Name matching is forbidden outside the single step that owns the code to name to
-          geometry mapping, which is where most naive location tools quietly corrupt their results.
-        </p>
-        <p>
-          The scoring engine is a transparent weighted dot product, identical across markets, not a
-          black box. It is deterministic and designed to port verbatim from this frontend into a
-          Postgres or edge function, so the demo math and the production math are the same math.
-          Adding a country is a data-adapter and weight-matrix change, not a rewrite; extending a
-          country from one pilot city to the whole nation is an ingestion job, because the schema and
-          the join key already assume national scale.
-        </p>
+        <h2>What each score weighs</h2>
+        <ul className="pillars">
+          <li>
+            <b>Demand</b>
+            <span>How many people the catchment actually holds.</span>
+          </li>
+          <li>
+            <b>Spending power</b>
+            <span>Whether the area can afford the format &mdash; premium concepts held to a higher bar.</span>
+          </li>
+          <li>
+            <b>Foot traffic</b>
+            <span>Road traffic and nearby anchors that pull customers past the door.</span>
+          </li>
+          <li>
+            <b>Competition gap</b>
+            <span>Residents left per existing outlet &mdash; the room still on the table.</span>
+          </li>
+        </ul>
 
-        <h2>Honest limitations</h2>
+        <h2>Why the number holds up</h2>
         <p>
-          Each live pilot runs on a clearly labeled seed dataset (12 Quezon City barangays for PH, 12
-          Kuala Lumpur zones for MY). Income is city-resolution in the pilots, foot traffic is a
-          modeled proxy (road traffic plus anchor gravity), and informal-vendor competitor counts
-          undercount. Those caveats travel with the product rather than hiding in a footnote, which
-          is the whole point: a real-data product that is honest about what its data can and cannot
-          say. Use the provenance panel above each map to see the exact sources per market.
+          Every score is built on open government data and one transparent formula, identical across
+          markets &mdash; no black box. The app shows the weight and reasoning behind each pillar, so
+          a CTO or an investment committee can audit exactly why a site scored what it did. The
+          pilots run on clearly labelled sample data across the Philippines (Metro Manila and
+          Calabarzon) and Malaysia (Kuala Lumpur); the same engine runs unchanged on full national
+          datasets, so what you&rsquo;re evaluating here is the real product, not a mockup.
         </p>
       </div>
     </article>

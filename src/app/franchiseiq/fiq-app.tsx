@@ -45,6 +45,11 @@ async function postJSON<T>(url: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+// The location + format lists change rarely, so cache them per market for the
+// session. First visit fetches once; switching markets (or coming back) is
+// instant with no loading flash and no repeat request.
+const listCache = new Map<MarketCode, { locations: LocationDTO[]; formats: FormatDTO[] }>();
+
 export function FranchiseIQApp() {
   const [market, setMarket] = useState<MarketCode>("ph");
   const [mode, setMode] = useState<"fwd" | "rev">("fwd");
@@ -97,13 +102,29 @@ export function FranchiseIQApp() {
     };
   }, []);
 
-  // ── Fetch locations + formats on market change ─────────────────────────────
+  // ── Fetch locations + formats on market change (cached per market) ─────────
   useEffect(() => {
     let cancelled = false;
-    setStatus("loading");
+    const apply = (locs: LocationDTO[], fmts: FormatDTO[]) => {
+      setLocations(locs);
+      setFormats(fmts);
+      setSelCode(locs[0]?.code ?? "");
+      setSelFormat(
+        fmts.some((f) => f.id === ed.defaultFormat) ? ed.defaultFormat : fmts[0]?.id ?? "",
+      );
+      setStatus("ready");
+    };
     setResult(null);
     setRanking(null);
     setScoreAll(null);
+
+    const cached = listCache.get(market);
+    if (cached) {
+      apply(cached.locations, cached.formats); // instant, no loading flash
+      return;
+    }
+
+    setStatus("loading");
     Promise.all([
       fetch(`/api/fiq/locations?market=${market}`).then((r) =>
         r.ok ? (r.json() as Promise<LocationDTO[]>) : Promise.reject(new Error("locations")),
@@ -114,13 +135,8 @@ export function FranchiseIQApp() {
     ])
       .then(([locs, fmts]) => {
         if (cancelled) return;
-        setLocations(locs);
-        setFormats(fmts);
-        setSelCode(locs[0]?.code ?? "");
-        setSelFormat(
-          fmts.some((f) => f.id === ed.defaultFormat) ? ed.defaultFormat : fmts[0]?.id ?? "",
-        );
-        setStatus("ready");
+        listCache.set(market, { locations: locs, formats: fmts });
+        apply(locs, fmts);
       })
       .catch(() => {
         if (!cancelled) setStatus("error");
@@ -417,6 +433,11 @@ export function FranchiseIQApp() {
                     features. Switch to &quot;Score a franchise&quot; for the pillar breakdown.
                   </div>
                 </>
+              ) : status === "loading" ? (
+                <div className="empty fiq-loading">
+                  <span className="fiq-spin" aria-hidden="true" />
+                  Loading pilot data…
+                </div>
               ) : (
                 <div className="empty">
                   Select a {unit} and franchise type, then run the assessment.

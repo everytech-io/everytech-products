@@ -398,7 +398,32 @@
   color: var(--stamp);
 }
 
+/* loading state */
+.fiq .fiq-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--field);
+}
+.fiq .fiq-spin {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--amber);
+  animation: fiq-spin 0.8s linear infinite;
+}
+@keyframes fiq-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .fiq .fiq-spin {
+    animation: none;
+  }
   .fiq .stamp,
   .fiq .bar i,
   .fiq button.go {
