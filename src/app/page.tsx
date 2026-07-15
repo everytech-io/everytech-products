@@ -16,7 +16,8 @@ export default function HomePage() {
           One store for every app EveryTech ships. Search the outcome you need or browse by use
           case, then open a real, working surface built on the same discipline that runs our
           enterprise work &mdash; real data, an auditable trail, no slideware. FranchiseIQ, a
-          franchise-site scoring engine live in the Philippines and Malaysia, is the first.
+          franchise-site scoring engine live for the Philippines and Malaysia on a pilot dataset,
+          is the first.
         </p>
         <div className="hero__cta">
           <a className="btn" href="#store">

@@ -24,5 +24,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# FranchiseIQ seed data — real feature values / weights must never be committed.
+# The committed *.example.json documents the shape; the real seed is *.local.json.
+scripts/seed/*.local.json
+
 # typescript
 *.tsbuildinfo
