@@ -78,6 +78,7 @@ export function FranchiseIQApp() {
   // ── Init Leaflet map once ──────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
+    const onResize = () => mapRef.current?.invalidateSize();
     (async () => {
       const leaflet = await import("leaflet");
       if (cancelled || !mapEl.current || mapRef.current) return;
@@ -93,10 +94,18 @@ export function FranchiseIQApp() {
       LRef.current = leaflet;
       mapRef.current = map;
       setMapReady(true);
+      // Re-measure after layout settles — on mobile the panels stack and the
+      // map container's final size isn't known at mount, which otherwise leaves
+      // the tiles grey/half-rendered.
       setTimeout(() => map.invalidateSize(), 0);
+      setTimeout(() => map.invalidateSize(), 300);
+      window.addEventListener("resize", onResize);
+      window.addEventListener("orientationchange", onResize);
     })();
     return () => {
       cancelled = true;
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
       mapRef.current?.remove();
       mapRef.current = null;
     };

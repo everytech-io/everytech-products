@@ -80,16 +80,48 @@
   }
   .fiq .wrap {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 320px auto;
+    grid-template-rows: none; /* single column: rows auto-size to content */
   }
   .fiq .fiq-map {
     order: 1;
+    height: 340px;
+    min-height: 340px;
   }
   .fiq .panel-left {
     order: 0;
+    border-right: none;
+    border-bottom: 1.5px solid var(--line);
   }
   .fiq .panel-right {
     order: 2;
+    border-left: none;
+    border-top: 1.5px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  .fiq .fiq-head {
+    padding: 12px 14px 8px;
+    gap: 8px;
+  }
+  .fiq .fiq-head .tag {
+    flex-basis: 100%;
+    order: 3;
+  }
+  .fiq .panel-left,
+  .fiq .panel-right {
+    padding: 14px;
+  }
+  .fiq .fiq-map {
+    height: 300px;
+    min-height: 300px;
+  }
+  .fiq .stamp {
+    width: 150px;
+    height: 150px;
+  }
+  .fiq .stamp .num {
+    font-size: 48px;
   }
 }
 
