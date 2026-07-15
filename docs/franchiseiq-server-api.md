@@ -148,3 +148,28 @@ The civic-stamp UI stays exactly as-is — only the **data layer** changes:
    Since it's approximate demo data, we can *leave history as-is and only stop committing
    data going forward* **[recommended]**, or *rewrite history* (`git filter-repo` + force
    push) to purge it. Real production data must never be committed regardless.
+
+---
+
+## 11. Decisions (locked 2026-07-15) + build plan
+
+| decision | choice |
+|---|---|
+| Data store | **Supabase Postgres** (RLS deny-public; server reads via service role) |
+| Explanations | **Banded** ("≈200k residents", "high density", "low competition") — no exact values leave the server |
+| Client | **Convert apps to Next.js React routes** (retire the static `public/apps/*.html` iframes; port the civic-stamp UI to JSX + Leaflet-via-npm, identical look) |
+| Repo history | **Leave as-is**; remove data from the working tree; never commit real data |
+| Delivery | **Feature branch → PR → live preview deploy** so it can be tested before merging to `main` |
+
+**Build (branch `feat/fiq-server-api`, opened as a PR — no auto-merge):**
+- `src/lib/fiq/engine.ts` — scoring ported for **exact parity** with the current client engine, plus a banded-explanation composer. Covered by a parity test.
+- `src/lib/fiq/repo.ts` — server-only Supabase reads (service-role key).
+- `src/app/api/fiq/{markets,locations,formats,score,rank,score-all}/route.ts` — outputs only, POST endpoints rate-limited.
+- `src/app/franchiseiq/*` — React port of the PH/MY apps (same design, same SVG icons), fetching the API.
+- `supabase/migrations/0001_fiq.sql` — schema + RLS. `scripts/seed-fiq.mjs` loads from a **gitignored** local JSON (data never re-committed).
+- Retire `public/apps/franchiseiq*.html`; drop the `/apps/*` header block.
+
+**Preview + go-live (needs credentials):**
+- Supabase project (URL + service-role key, or a `DATABASE_URL`) → run migration + seed.
+- Railway: set env vars + a **PR/preview environment** so the branch gets its own test URL.
+- You test the preview → approve → merge PR to `main` → production.
