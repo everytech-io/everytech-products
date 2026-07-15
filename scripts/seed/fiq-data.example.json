@@ -1,0 +1,67 @@
+{
+  "_comment": "DUMMY sample documenting the seed shape. Values are obviously fake. The real seed lives in fiq-data.local.json (gitignored, never committed). Table columns mirror supabase/migrations/0001_fiq.sql.",
+  "markets": [
+    { "code": "ph", "name": "Philippines" },
+    { "code": "my", "name": "Malaysia" }
+  ],
+  "locations": [
+    {
+      "code": "000000001",
+      "market": "ph",
+      "city": "Sampleton",
+      "name": "Example Barangay Uno",
+      "lat": 14.5,
+      "lng": 121.0
+    },
+    {
+      "code": "9001",
+      "market": "my",
+      "city": "",
+      "name": "Example KL Zone Satu",
+      "lat": 3.14,
+      "lng": 101.7
+    }
+  ],
+  "features": [
+    {
+      "code": "000000001",
+      "pop": 111111,
+      "dens": 22222,
+      "inc": 0.5,
+      "tra": 0.5,
+      "poi": { "school": 1, "terminal": 1, "mall": 1, "church": 1, "market": 1 },
+      "comp": { "fastfood": 1, "foodcart": 1, "coffee": 1, "pharmacy": 1 }
+    },
+    {
+      "code": "9001",
+      "pop": 99999,
+      "dens": 12345,
+      "inc": 0.5,
+      "tra": 0.5,
+      "poi": { "school": 1, "transit": 1, "mall": 1, "worship": 1, "market": 1 },
+      "comp": { "fastfood": 1, "mamak": 1, "bubbletea": 1, "pharmacy": 1 }
+    }
+  ],
+  "formats": [
+    {
+      "id": "fastfood",
+      "market": "ph",
+      "name": "Fast food (Example-class)",
+      "color": "#B3282D",
+      "comp_key": "fastfood",
+      "weights": { "demand": 0.3, "income": 0.25, "traffic": 0.25, "gap": 0.2 },
+      "income_floor": 0.45,
+      "anchor_weights": { "mall": 3, "terminal": 2, "school": 1, "church": 1, "market": 1 }
+    },
+    {
+      "id": "mamak",
+      "market": "my",
+      "name": "Mamak stall (Example)",
+      "color": "#F2A900",
+      "comp_key": "mamak",
+      "weights": { "demand": 0.2, "income": 0.1, "traffic": 0.4, "gap": 0.3 },
+      "income_floor": 0,
+      "anchor_weights": { "transit": 3, "school": 3, "market": 2, "worship": 1, "mall": 1 }
+    }
+  ]
+}
