@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getProduct } from "@/lib/products";
-import { EditionSwitcher } from "./editions";
+import { FranchiseIQApp } from "./fiq-app";
 
 const product = getProduct("franchiseiq")!;
 
@@ -40,7 +40,7 @@ export default function FranchiseIQPage() {
         </div>
       </header>
 
-      <EditionSwitcher />
+      <FranchiseIQApp />
 
       <div className="prose">
         <blockquote>

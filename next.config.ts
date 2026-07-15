@@ -11,21 +11,11 @@ const nextConfig: NextConfig = {
     ];
     return [
       {
-        // Deny framing of the site chrome (clickjacking guard). The bundled
-        // product apps under /apps/* are same-origin embeds, so they are
-        // allowed to be framed by this site (SAMEORIGIN) below.
-        source: "/((?!apps/).*)",
+        // Deny framing of the site (clickjacking guard). FranchiseIQ now renders
+        // as a first-party React route, so there are no same-origin iframe embeds
+        // to allow-list anymore.
+        source: "/:path*",
         headers: [...base, { key: "X-Frame-Options", value: "DENY" }],
-      },
-      {
-        source: "/apps/:path*",
-        headers: [
-          ...base,
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          // Keep the raw pilot apps out of search indexes — they are meant to be
-          // viewed embedded in the product page, not as standalone URLs.
-          { key: "X-Robots-Tag", value: "noindex, nofollow" },
-        ],
       },
     ];
   },
