@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s — EveryTech Products",
   },
   description:
-    "EveryTech's product hub: the single place every first-party tool the firm ships is launched and lives. First product: FranchiseIQ PH, franchise-site location intelligence on open Philippine government data.",
+    "EveryTech's product hub: the single place every first-party tool EveryTech ships is launched and lives. First product: FranchiseIQ PH, franchise-site location intelligence on open Philippine government data.",
   openGraph: {
     title: "EveryTech Products",
     description:

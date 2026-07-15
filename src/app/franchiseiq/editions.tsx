@@ -34,9 +34,6 @@ export function EditionSwitcher() {
           <span className="appframe__label mono">
             franchiseiq · {ed.code.toUpperCase()} · pilot: {ed.city}
           </span>
-          <a className="appframe__open" href={ed.app} target="_blank" rel="noopener">
-            Open ↗
-          </a>
         </div>
         <iframe
           key={ed.code}

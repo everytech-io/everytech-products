@@ -35,7 +35,7 @@ export default function FranchiseIQPage() {
             target="_blank"
             rel="noopener"
           >
-            Talk to the firm &rarr;
+            Talk to us &rarr;
           </a>
         </div>
       </header>

@@ -16,7 +16,7 @@ export function SiteHeader() {
           </li>
           <li>
             <a href="https://everytech.io" target="_blank" rel="noopener">
-              The firm
+              everytech.io
             </a>
           </li>
         </ul>

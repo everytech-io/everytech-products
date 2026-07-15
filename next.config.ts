@@ -19,7 +19,13 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/apps/:path*",
-        headers: [...base, { key: "X-Frame-Options", value: "SAMEORIGIN" }],
+        headers: [
+          ...base,
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // Keep the raw pilot apps out of search indexes — they are meant to be
+          // viewed embedded in the product page, not as standalone URLs.
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
       },
     ];
   },

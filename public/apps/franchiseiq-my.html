@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FranchiseIQ MY — Location Intelligence POC</title>
+<title>FranchiseIQ MY — Location Intelligence</title>
 <meta name="description" content="FranchiseIQ MY — a 0-100 franchise-viability score for any Kuala Lumpur zone, built on open Malaysian government data (DOSM, data.gov.my, JKR, OSM), keyed on DOSM administrative codes." />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -82,6 +82,10 @@ button.go:focus-visible,select:focus-visible,button.mode:focus-visible{outline:2
 }
 .fr-item.active{border-color:var(--ink);background:#FFF6DE}
 .fr-item .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.fr-ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px}
+.fr-ico svg{width:20px;height:20px;display:block}
+.fr-ico.sm{width:21px;height:21px}
+.fr-ico.sm svg{width:18px;height:18px}
 
 #map{min-height:320px;z-index:0}
 .leaflet-container{background:#E8E6DD;font-family:'IBM Plex Mono',monospace}
@@ -133,7 +137,7 @@ button.go:focus-visible,select:focus-visible,button.mode:focus-visible{outline:2
 <header>
   <h1>Franchise<span>IQ</span> MY</h1>
   <div class="tag">location intelligence · open government data · pilot: Kuala Lumpur</div>
-  <div class="badge">POC · SEED DATA</div>
+  <div class="badge">PILOT</div>
 </header>
 
 <div class="wrap">
@@ -159,7 +163,7 @@ button.go:focus-visible,select:focus-visible,button.mode:focus-visible{outline:2
     <button class="go" onclick="run()">Run assessment</button>
 
     <div class="footnote">
-      Seed dataset: 12 KL zones, values approximated from public sources for demo only.
+      Pilot dataset: 12 KL zones, values approximated from public sources for demonstration.
       Production pipeline replaces this with DOSM 2020 Census (MyCensus / OpenDOSM),
       DOSM household income &amp; poverty estimates, JKR / MOT traffic volumes on
       data.gov.my, and OSM Overpass POIs, keyed on DOSM administrative codes.
@@ -209,6 +213,20 @@ const PROFILES = [
   w:{demand:.35, income:.15, traffic:.15, gap:.35},
   incomeFloor:0, anchorW:{market:2,worship:2,transit:1,school:1,mall:1}},
 ];
+
+/* ============ FORMAT ICONS — one glyph per franchise format ============ */
+/* Inline SVGs (not emoji) so they inherit each format's color via currentColor,
+   stay crisp at any size, and match the app's line-drawn civic aesthetic. */
+const ICONS = {
+ // burger — fast food (McD / KFC-class)
+ fastfood:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 4.5 0 0 1 16 0Z"/><path d="M4 14.5h16"/><path d="M6 18h12a2 2 0 0 0 2-2H4a2 2 0 0 0 2 2Z"/></svg>`,
+ // steaming bowl — mamak / nasi campur
+ mamak:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M2.5 11.5h19"/><path d="M9 4.5c0 1.6 1.6 1.6 1.6 3.2M13 4.5c0 1.6 1.6 1.6 1.6 3.2"/></svg>`,
+ // sealed cup with pearls — bubble tea / kopitiam
+ bubbletea:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10l-1 11a2 2 0 0 1-2 1.8H10A2 2 0 0 1 8 19Z"/><path d="M6 8h12"/><path d="M14 3l-1.5 5"/><circle cx="11" cy="16" r=".8" fill="currentColor"/><circle cx="14" cy="18" r=".8" fill="currentColor"/></svg>`,
+ // medical cross — pharmacy
+ pharmacy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M12 8.5v7M8.5 12h7"/></svg>`,
+};
 
 /* ============ SCORING ENGINE ============ */
 const maxPop = Math.max(...BGYS.map(b=>b.pop));
@@ -272,7 +290,7 @@ PROFILES.forEach(p=>{
   const d=document.createElement("div");
   d.className="fr-item"+(p.id===selectedFr?" active":"");
   d.setAttribute("role","button");d.setAttribute("tabindex","0");
-  d.innerHTML=`<span class="dot" style="background:${p.color}"></span>${p.name}`;
+  d.innerHTML=`<span class="fr-ico" style="color:${p.color}">${ICONS[p.id]}</span>${p.name}`;
   const pick=()=>{selectedFr=p.id;document.querySelectorAll(".fr-item").forEach(x=>x.classList.remove("active"));d.classList.add("active");};
   d.onclick=pick; d.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();}};
   frList.appendChild(d);
@@ -346,7 +364,7 @@ function run(){
         ${ranked.map((x,i)=>`
           <div class="rank-card ${i===0?"top":""}">
             <span class="rk">${String(i+1).padStart(2,"0")}</span>
-            <span class="dot" style="width:9px;height:9px;border-radius:50%;background:${x.p.color};flex:none"></span>
+            <span class="fr-ico sm" style="color:${x.p.color}">${ICONS[x.p.id]}</span>
             <span class="nm">${x.p.name}</span>
             <span class="sc">${x.r.total}</span>
           </div>`).join("")}
