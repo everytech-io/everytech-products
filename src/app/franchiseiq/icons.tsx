@@ -11,6 +11,9 @@ const svg = {
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
   viewBox: "0 0 24 24",
+  // decorative — the button/rank labels carry the meaning
+  "aria-hidden": true,
+  focusable: false,
 };
 
 export const FORMAT_ICONS: Record<string, JSX.Element> = {

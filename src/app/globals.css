@@ -36,6 +36,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  overflow-x: clip; /* belt-and-suspenders guard against any horizontal overflow */
   background: var(--paper);
   color: var(--body);
   font-family: var(--sans);
@@ -97,6 +98,16 @@ h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); font-weight: 600;
 .btn--ghost:hover { background: var(--ink); color: var(--paper); }
 .site-nav a.btn { color: var(--ink); }
 .site-nav a.btn:hover { color: var(--paper); }
+
+/* Mobile header: the secondary text links overflow narrow phones (they have a
+   fixed ~358px intrinsic width). Collapse them below 640px and keep the brand +
+   the primary CTA, which fit comfortably. */
+@media (max-width: 640px) {
+  .site-header { flex-wrap: wrap; padding: 1.1rem 0; }
+  .site-nav ul { display: none; }
+  .site-nav { gap: 0; }
+  .site-nav a.btn { white-space: nowrap; }
+}
 
 /* ── Hero (stark briefing-document discipline) ──────────────────────────── */
 .hero {
@@ -224,6 +235,11 @@ h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); font-weight: 600;
 .edtab:hover { color: var(--gold-ink); border-color: var(--gold); }
 .edtab--active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .edtab--active:hover { color: var(--paper); }
+@media (max-width: 560px) {
+  /* equal-width market tabs on phones; city label is echoed in the app bar below */
+  .edtab { flex: 1 1 0; justify-content: center; }
+  .edtab__city { display: none; }
+}
 .edtab__city { font-weight: 500; font-size: 0.68rem; opacity: 0.75; letter-spacing: 0.04em; }
 .prov { margin: 0 0 2.4rem; padding: 1.1rem 1.3rem; background: var(--paper-pure); border: 1px solid var(--rule); border-left: 3px solid var(--gold); border-radius: 12px; }
 .prov__head { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-ink); margin: 0 0 0.6rem; }

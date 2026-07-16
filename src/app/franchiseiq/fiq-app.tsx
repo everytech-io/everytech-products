@@ -385,10 +385,20 @@ export function FranchiseIQApp() {
                     {KEY_LABEL[market]} {result.code}
                   </div>
                   <div className="stamp-wrap">
-                    <div className={`stamp ${inked ? "inked" : "pre"}${result.ok ? " ok" : ""}`}>
-                      <div className="num">{result.total}</div>
-                      <div className="lbl">/ 100 · FranchiseIQ</div>
-                      <div className="verdict">{result.verdict}</div>
+                    <div
+                      className={`stamp ${inked ? "inked" : "pre"}${result.ok ? " ok" : ""}`}
+                      role="img"
+                      aria-label={`Score ${result.total} out of 100 — ${result.verdict}`}
+                    >
+                      <div className="num" aria-hidden="true">
+                        {result.total}
+                      </div>
+                      <div className="lbl" aria-hidden="true">
+                        / 100 · FranchiseIQ
+                      </div>
+                      <div className="verdict" aria-hidden="true">
+                        {result.verdict}
+                      </div>
                     </div>
                   </div>
                   {result.pillars.map((p) => (
