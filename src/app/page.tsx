@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import AppStore from "@/components/app-store";
+import { JsonLd } from "@/components/json-ld";
+import { homeGraph } from "@/lib/structured-data";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={homeGraph()} />
+
       <section className="hero">
         <p className="kicker">EveryTech App Store</p>
         <h1 className="hero__title">

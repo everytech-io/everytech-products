@@ -1,21 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/components/json-ld";
 import { getProduct } from "@/lib/products";
+import { SITE_NAME } from "@/lib/site";
+import { productGraph } from "@/lib/structured-data";
 import { FranchiseIQApp } from "./fiq-app";
 
 const product = getProduct("franchiseiq")!;
 
+/** The four pillars the score actually weighs, plus the reverse mode. */
+const FEATURES = [
+  "Score any neighborhood 0 to 100 for a franchise format",
+  "Reverse mode: rank every format for one location",
+  "Demand, spending power, foot traffic and competition-gap pillars",
+  "Per-pillar reasoning and weights shown for every score",
+  "Live pilots in the Philippines (PSGC-keyed) and Malaysia (DOSM-keyed)",
+];
+
+const TITLE = product.seoTitle!;
+const DESCRIPTION = product.seoDescription!;
+
 export const metadata: Metadata = {
-  title: product.name,
-  description: product.excerpt,
-  openGraph: { title: product.name, description: product.excerpt, url: "/franchiseiq" },
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: product.href },
+  keywords: product.keywords,
+  openGraph: {
+    title: `${TITLE} — ${SITE_NAME}`,
+    description: DESCRIPTION,
+    url: product.href,
+    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${TITLE} — ${SITE_NAME}`,
+    description: DESCRIPTION,
+  },
 };
 
 export default function FranchiseIQPage() {
   return (
     <article className="post">
+      <JsonLd data={productGraph(product, FEATURES)} />
       <header className="post-header">
-        <Link className="post-back" href="/#products">
+        <Link className="post-back" href="/#store">
           &larr; All products
         </Link>
         <p className="kicker">{product.tagline}</p>
