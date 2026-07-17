@@ -12,7 +12,7 @@ export function SiteHeader() {
       <nav className="site-nav" aria-label="Main navigation">
         <ul>
           <li>
-            <Link href="/#products">Products</Link>
+            <Link href="/#store">Products</Link>
           </li>
           <li>
             <a href="https://everytech.io" target="_blank" rel="noopener">

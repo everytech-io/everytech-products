@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PRODUCTS, USE_CASES, type Product, type UseCase } from "@/lib/products";
 
 /** Build the searchable text blob for a product once. */
@@ -14,6 +14,15 @@ function haystack(p: Product): string {
 export default function AppStore() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<UseCase | null>(null);
+
+  // Deep link: /?q=<term> pre-fills the search, which is what the WebSite
+  // SearchAction in our structured data promises crawlers. Read after mount
+  // rather than from `searchParams` so the landing page stays statically
+  // rendered — the full catalog must be in the first byte of HTML.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setQuery(q);
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
