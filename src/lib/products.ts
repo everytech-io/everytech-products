@@ -24,6 +24,16 @@ export type Product = {
   statusLabel: string;
   /** Internal route for a product detail page, when one exists. */
   href?: string;
+  /**
+   * Search-result copy for the product's own page: ~150-160 chars so it renders
+   * whole in a SERP. `excerpt` is the in-store card copy and runs longer, so the
+   * two are deliberately separate rather than one string doing both jobs.
+   */
+  seoDescription?: string;
+  /** Short, keyword-led page title segment; composed by the root title template. */
+  seoTitle?: string;
+  /** ISO date of the last substantive change to this product's page. */
+  updatedAt: string;
   meta: string[];
   /** Use-case categories this product answers; used by store search/filter. */
   categories: UseCase[];
@@ -41,6 +51,10 @@ export const PRODUCTS: Product[] = [
     status: "live",
     statusLabel: "Live · PH + MY",
     href: "/franchiseiq",
+    seoTitle: "FranchiseIQ · Franchise Site Scoring",
+    seoDescription:
+      "Score any neighborhood 0 to 100 for a franchise format, or reverse it to rank the best format for a site. Live pilots in the Philippines and Malaysia.",
+    updatedAt: "2026-07-16",
     meta: ["Geospatial", "Open gov data", "PH + MY"],
     categories: [
       "Location & market intelligence",
@@ -73,6 +87,7 @@ export const PRODUCTS: Product[] = [
       "The governance layer behind our RAG work, packaged as a product: declarative intent specifications and automated evaluation gates that keep generated content grounded and compliant before it ships.",
     status: "in-development",
     statusLabel: "In development",
+    updatedAt: "2026-07-16",
     meta: ["AI governance", "Evaluation"],
     categories: ["AI governance"],
     keywords: [
@@ -95,6 +110,7 @@ export const PRODUCTS: Product[] = [
       "Production-hardened agent networks with strict exception handling and a full execution ledger, so high-volume business logic runs predictably and every decision is accountable after the fact.",
     status: "in-development",
     statusLabel: "In development",
+    updatedAt: "2026-07-16",
     meta: ["Agents", "Observability"],
     categories: ["Automation & agents", "AI governance"],
     keywords: [
