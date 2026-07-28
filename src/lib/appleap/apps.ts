@@ -10,6 +10,8 @@
  * falls back to the Play Store, so mistakes fail soft.
  */
 
+import { EXTENDED_APPS, EXTENDED_CATEGORIES } from "./apps-extended";
+
 export type MobileAppKind = "app" | "action";
 
 export type MobileApp = {
@@ -36,7 +38,7 @@ export type MobileApp = {
 
 export type MobileAppCategory = { id: string; name: string };
 
-export const MOBILE_APP_CATEGORIES: MobileAppCategory[] = [
+const BASE_CATEGORIES: MobileAppCategory[] = [
   { id: "essentials", name: "Essentials" },
   { id: "ai", name: "AI & Search" },
   { id: "transport", name: "Transport" },
@@ -45,7 +47,7 @@ export const MOBILE_APP_CATEGORIES: MobileAppCategory[] = [
   { id: "health", name: "Health" },
 ];
 
-export const MOBILE_APPS: MobileApp[] = [
+const BASE_APPS: MobileApp[] = [
   // --- Essentials (OS actions + mail) ---
   {
     slug: "phone",
@@ -273,6 +275,13 @@ export const MOBILE_APPS: MobileApp[] = [
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.myfitnesspal.android",
   },
 ];
+
+export const MOBILE_APP_CATEGORIES: MobileAppCategory[] = [
+  ...BASE_CATEGORIES,
+  ...EXTENDED_CATEGORIES,
+];
+
+export const MOBILE_APPS: MobileApp[] = [...BASE_APPS, ...EXTENDED_APPS];
 
 export function getMobileApp(slug: string): MobileApp | undefined {
   return MOBILE_APPS.find((a) => a.slug === slug);
