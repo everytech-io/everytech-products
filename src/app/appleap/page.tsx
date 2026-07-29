@@ -103,40 +103,6 @@ export default function AppLeapPage() {
             </span>
           </li>
         </ul>
-
-        <h2>How it works</h2>
-        <ul className="pillars">
-          <li>
-            <b>iOS</b>
-            <span>
-              Prefers a universal link when the app publishes one; otherwise a custom URL scheme,
-              with a timed fallback to the App Store if nothing opens.
-            </span>
-          </li>
-          <li>
-            <b>Android</b>
-            <span>
-              Builds an <code>intent://</code> URL from the app&rsquo;s scheme and package name;
-              Chrome falls back to the Play Store on its own if the app isn&rsquo;t installed.
-            </span>
-          </li>
-          <li>
-            <b>Failing soft</b>
-            <span>
-              Every deep link degrades gracefully: a wrong scheme falls back to the app&rsquo;s
-              store listing instead of doing nothing, so a stale entry costs a tap, not a dead end.
-            </span>
-          </li>
-        </ul>
-
-        <h2>A note on accuracy</h2>
-        <p>
-          Schemes, package names, and store IDs are best-effort seed data, not guaranteed current
-          &mdash; apps change their URL schemes over time without warning. A wrong entry fails soft:
-          iOS falls back to the App Store, Android falls back to the Play Store, so a stale scheme
-          costs an extra tap, not a broken page. Keeping the beta small for now is partly about
-          catching those stale entries before we open the catalog up wider.
-        </p>
       </div>
     </article>
   );
