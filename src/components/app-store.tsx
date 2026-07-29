@@ -2,13 +2,26 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { PRODUCTS, USE_CASES, type Product, type UseCase } from "@/lib/products";
+import { PRODUCTS, USE_CASES, type Product, type ProductStatus, type UseCase } from "@/lib/products";
 
 /** Build the searchable text blob for a product once. */
 function haystack(p: Product): string {
   return [p.name, p.tagline, p.excerpt, ...p.meta, ...p.categories, ...p.keywords]
     .join(" ")
     .toLowerCase();
+}
+
+/** Card CTA copy: a waitlist product still links out (to the waitlist form), it
+ * just isn't an app you can open yet — say so instead of implying it's live. */
+function ctaLabel(status: ProductStatus): string {
+  switch (status) {
+    case "live":
+      return "Open app";
+    case "waitlist":
+      return "Join waitlist";
+    case "in-development":
+      return "In development";
+  }
 }
 
 export default function AppStore() {
@@ -34,20 +47,21 @@ export default function AppStore() {
   }, [query, active]);
 
   const liveCount = PRODUCTS.filter((p) => p.status === "live").length;
+  const waitlistCount = PRODUCTS.filter((p) => p.status === "waitlist").length;
 
   return (
     <section className="section" id="store" aria-label="App store">
       <div className="section-head">
         <p className="kicker">The app store</p>
         <span className="section-head__link mono">
-          {liveCount} live · {PRODUCTS.length} total
+          {liveCount} live · {waitlistCount} waitlist · {PRODUCTS.length} total
         </span>
       </div>
 
       <p className="section__lead">
-        Pick a use case or search for the outcome you need. Every result is a real,
-        first-party EveryTech app you can open — not slideware. Coming-soon entries are
-        honest roadmap.
+        Pick a use case or search for the outcome you need. Every result is real,
+        first-party EveryTech work &mdash; not slideware. Some are live and open now, some are
+        in private beta behind a waitlist, and coming-soon entries are honest roadmap.
       </p>
 
       {/* ── Search + use-case filter ─────────────────────────────────── */}
@@ -133,7 +147,10 @@ export default function AppStore() {
                   <p className="kicker">{p.tagline}</p>
                   <span
                     className={
-                      "pcard__status" + (p.status === "in-development" ? " pcard__status--soon" : "")
+                      "pcard__status" +
+                      (p.status === "in-development" || p.status === "waitlist"
+                        ? " pcard__status--soon"
+                        : "")
                     }
                   >
                     {p.statusLabel}
@@ -147,7 +164,7 @@ export default function AppStore() {
                   ))}
                 </div>
                 <span className="pcard__more">
-                  {p.href ? "Open app" : "In development"}
+                  {ctaLabel(p.status)}
                   {p.href ? <span className="pcard__arrow">&rarr;</span> : null}
                 </span>
               </>

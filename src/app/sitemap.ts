@@ -11,7 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const productPages: MetadataRoute.Sitemap = PRODUCTS.filter((p) => p.href).map((p) => ({
     url: absoluteUrl(p.href!),
     lastModified: new Date(p.updatedAt),
-    // The live app is the destination we actually want ranked.
+    // Only a shipped, live app is the destination we actually want ranked highly —
+    // a waitlist page (nothing to use yet) gets the same lower-priority monthly
+    // branch as an in-development entry, not the live app's weekly/0.9.
     changeFrequency: p.status === "live" ? "weekly" : "monthly",
     priority: p.status === "live" ? 0.9 : 0.5,
   }));

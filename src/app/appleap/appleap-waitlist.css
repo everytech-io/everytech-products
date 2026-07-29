@@ -1,0 +1,123 @@
+/* AppLeap — the private-beta waitlist form embedded on the product page. Uses
+   the store's existing --paper/--ink/--gold/--rule tokens and the shared .btn
+   class so it reads as part of the same site, not a bolted-on widget. */
+
+.waitlist {
+  margin: 0 0 2.4rem;
+  padding: clamp(1.6rem, 4vw, 2.2rem);
+  border: 1px solid var(--ink);
+  border-radius: 14px;
+  background: var(--paper-pure);
+  box-shadow: 0 30px 70px -46px rgba(22, 20, 15, 0.5);
+}
+
+.waitlist__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 26rem;
+}
+
+.waitlist__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.waitlist__field label {
+  font-family: var(--label);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.waitlist__hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted);
+}
+
+.waitlist__field input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.waitlist__field input::placeholder {
+  color: var(--faint);
+}
+
+.waitlist__field input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.waitlist__field input[aria-invalid="true"] {
+  border-color: var(--red);
+}
+
+.waitlist__field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.waitlist__submit {
+  align-self: flex-start;
+}
+
+.waitlist__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.waitlist__submit:disabled:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.waitlist__status {
+  min-height: 1.3rem;
+  margin: 1.2rem 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.waitlist__status:focus-visible {
+  outline: none;
+}
+
+.waitlist__status--error {
+  color: var(--red);
+}
+
+.waitlist__fallback {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.waitlist__fallback a {
+  color: var(--gold-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 380px) {
+  .waitlist {
+    padding: 1.2rem;
+  }
+
+  .waitlist__form {
+    max-width: none;
+  }
+}

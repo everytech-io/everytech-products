@@ -1,4 +1,4 @@
-export type ProductStatus = "live" | "in-development";
+export type ProductStatus = "live" | "waitlist" | "in-development";
 
 /**
  * Use-case categories a visitor browses the store by. Keep this list tight —
@@ -32,6 +32,13 @@ export type Product = {
   seoDescription?: string;
   /** Short, keyword-led page title segment; composed by the root title template. */
   seoTitle?: string;
+  /**
+   * schema.org `applicationSubCategory` for this product's JSON-LD. Per-product
+   * because the graph is shared: hardcoding one value made every product claim
+   * FranchiseIQ's category, which for a deep-link launcher is a flat mismatch
+   * between the markup and the visible page.
+   */
+  appSubCategory: string;
   /** ISO date of the last substantive change to this product's page. */
   updatedAt: string;
   meta: string[];
@@ -54,6 +61,7 @@ export const PRODUCTS: Product[] = [
     seoTitle: "FranchiseIQ · Franchise Site Scoring",
     seoDescription:
       "Score any neighborhood 0 to 100 for a franchise format, or reverse it to rank the best format for a site. Live pilots in the Philippines and Malaysia.",
+    appSubCategory: "Location intelligence",
     updatedAt: "2026-07-16",
     meta: ["Geospatial", "Open gov data", "PH + MY"],
     categories: [
@@ -87,6 +95,7 @@ export const PRODUCTS: Product[] = [
       "The governance layer behind our RAG work, packaged as a product: declarative intent specifications and automated evaluation gates that keep generated content grounded and compliant before it ships.",
     status: "in-development",
     statusLabel: "In development",
+    appSubCategory: "Developer tools",
     updatedAt: "2026-07-16",
     meta: ["AI governance", "Evaluation"],
     categories: ["AI governance"],
@@ -105,22 +114,22 @@ export const PRODUCTS: Product[] = [
   {
     slug: "appleap",
     name: "AppLeap",
-    tagline: "Tap to open any app on your phone — or ask an agent to do it",
+    tagline: "A mobile deep-link launcher for your apps, in private beta",
     excerpt:
-      "A mobile-only launcher that deep-links straight into the app you want — Gmail, WhatsApp, Uber, Spotify, and more — with an App/Play Store fallback if it isn't installed. On desktop, scan a QR code to continue on your phone. Also runs as an MCP server, so an AI agent can look up and hand off deep links directly.",
-    status: "live",
-    statusLabel: "Live",
+      "Deep-links straight into the app you want — Gmail, WhatsApp, Uber, Spotify, and more — with an App/Play Store fallback if it isn't installed, plus an MCP server so an agent can hand off the same links. We're onboarding in small batches; join the waitlist for an invite.",
+    status: "waitlist",
+    statusLabel: "Private beta · Waitlist",
     href: "/appleap",
-    seoTitle: "AppLeap · Mobile App Deep-Link Launcher",
+    seoTitle: "AppLeap · Private Beta Waitlist",
     seoDescription:
-      "Tap to open any app on your phone — deep links with store fallback, a QR code for desktop, and an MCP server so AI agents can fetch launch links directly.",
+      "AppLeap deep-links into any app on your phone, with an MCP server for agents. It's in private beta — join the waitlist and we'll email you an invite.",
+    appSubCategory: "Utilities",
     updatedAt: "2026-07-29",
     meta: ["Deep links", "iOS + Android", "MCP server"],
     categories: ["Automation & agents"],
     keywords: [
       "deep link",
       "app launcher",
-      "qr code",
       "ios",
       "android",
       "universal link",
@@ -129,6 +138,9 @@ export const PRODUCTS: Product[] = [
       "model context protocol",
       "app store fallback",
       "play store fallback",
+      "waitlist",
+      "private beta",
+      "early access",
     ],
   },
   {
@@ -139,6 +151,7 @@ export const PRODUCTS: Product[] = [
       "Production-hardened agent networks with strict exception handling and a full execution ledger, so high-volume business logic runs predictably and every decision is accountable after the fact.",
     status: "in-development",
     statusLabel: "In development",
+    appSubCategory: "Developer tools",
     updatedAt: "2026-07-16",
     meta: ["Agents", "Observability"],
     categories: ["Automation & agents", "AI governance"],

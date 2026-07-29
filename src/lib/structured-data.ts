@@ -50,7 +50,7 @@ export function homeGraph() {
 }
 
 /**
- * A live product's detail page: the app itself, plus breadcrumbs back to the
+ * A product's detail page: the app itself, plus breadcrumbs back to the
  * store. No `offers` and no ratings — we don't have real ones, and inventing
  * them is exactly the kind of claim that earns a manual action.
  */
@@ -65,13 +65,15 @@ export function productGraph(product: Product, featureList: string[]) {
         name: product.name,
         url,
         applicationCategory: "BusinessApplication",
-        applicationSubCategory: "Location intelligence",
+        applicationSubCategory: product.appSubCategory,
         operatingSystem: "Web browser",
         description: product.seoDescription ?? product.excerpt,
         featureList,
         keywords: product.keywords.join(", "),
         inLanguage: "en",
-        isAccessibleForFree: true,
+        // Only a live, publicly-usable product is actually free to access — a
+        // waitlist or in-development entry has nothing a visitor can use yet.
+        isAccessibleForFree: product.status === "live",
         publisher: { "@id": ORG_ID },
         creator: { "@id": ORG_ID },
         isPartOf: { "@id": SITE_ID },
