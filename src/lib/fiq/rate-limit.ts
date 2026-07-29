@@ -46,9 +46,25 @@ export function rateLimit(ip: string): RateLimitResult {
   return { ok: false, remaining: 0, retryAfter: Math.ceil((1 - b.tokens) / REFILL_PER_SEC) };
 }
 
-/** Best-effort client IP from proxy headers (Railway sets x-forwarded-for). */
+/**
+ * Best-effort client IP from proxy headers (Railway sets x-forwarded-for).
+ *
+ * Reads the RIGHT-most hop, not the left-most. Proxies append the address they
+ * received the connection from, so the last entry is the one our edge actually
+ * observed; everything to its left was supplied by the caller and is forgeable.
+ * Taking `[0]` lets anyone mint a fresh bucket per request with a made-up
+ * `X-Forwarded-For: 1.2.3.4`, which silently disables the limiter for exactly
+ * the attacker it exists to stop.
+ *
+ * This assumes one trusted hop in front of the app (Railway's edge). Behind a
+ * second proxy the trusted entry moves left by one and this needs revisiting.
+ */
 export function clientIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
+  if (xff) {
+    const hops = xff.split(",");
+    const last = hops[hops.length - 1]?.trim();
+    if (last) return last;
+  }
   return req.headers.get("x-real-ip") || "unknown";
 }
