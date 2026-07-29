@@ -92,8 +92,9 @@ export default function AppLeapPage() {
           <li>
             <b>Agents</b>
             <span>
-              The same catalog is exposed over MCP, so an AI agent can look up an app and hand back
-              the right deep link without a person opening this page at all.
+              The same catalog is exposed over MCP at{" "}
+              <code>https://appleap-mcp.everytech.workers.dev/mcp</code>, so an AI agent can call{" "}
+              <code>list_apps</code> and <code>get_deeplink</code> directly, no page required.
             </span>
           </li>
         </ul>
