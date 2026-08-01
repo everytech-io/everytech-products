@@ -1,0 +1,57 @@
+/* Course follow-up capture — Day 2 signup on the Claude Code course page.
+   Same interaction stack as .waitlist, lighter frame: this island sits mid-prose
+   in a long read, so it borrows `.prose blockquote`'s rule border + gold left
+   edge instead of the waitlist's ink border and drop shadow. */
+
+.course-follow {
+  background: var(--paper-pure);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  scroll-margin-top: 1.5rem;
+}
+
+/* `.prose > *` sets margin at equal specificity — qualify to win deterministically. */
+.prose > .course-follow { margin: 2.4rem 0 2.6rem; }
+
+/* `.prose h3` is a descendant selector and would add 2rem of top margin inside the card. */
+.prose .course-follow__title { font-size: 1.15rem; margin: 0 0 0.5rem; }
+
+.course-follow__lead { margin: 0 0 1.1rem; font-size: 0.96rem; color: var(--muted); }
+
+.course-follow__form { display: flex; flex-direction: column; gap: 0.45rem; }
+.course-follow__form label {
+  font-family: var(--label); font-weight: 600; font-size: 0.78rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink);
+}
+
+.course-follow__row { display: flex; gap: 0.7rem; align-items: stretch; }
+.course-follow__row input {
+  flex: 1 1 14rem; min-width: 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--rule); border-radius: 10px;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: 0.95rem;
+}
+.course-follow__row input::placeholder { color: var(--faint); }
+.course-follow__row input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.course-follow__row input[aria-invalid="true"] { border-color: var(--red); }
+.course-follow__row input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.course-follow__submit { flex: none; white-space: nowrap; }
+.course-follow__submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.course-follow__submit:disabled:hover { background: var(--gold); color: var(--ink); }
+
+.course-follow__status { min-height: 1.3rem; margin: 0.9rem 0 0; font-size: 0.88rem; color: var(--muted); }
+.course-follow__status:focus-visible { outline: none; }
+.course-follow__status--error { color: var(--red); }
+.course-follow__status--done  { color: var(--ink); }
+
+.course-follow__note { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--faint); }
+
+@media (max-width: 560px) {
+  .course-follow__row { flex-direction: column; }
+  .course-follow__submit { width: 100%; }
+}
+@media (max-width: 380px) { .course-follow { padding: 1.2rem; } }

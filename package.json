@@ -9,6 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "tsx src/lib/fiq/engine.test.ts",
+    "test:course-follow": "NODE_OPTIONS=--conditions=react-server tsx src/app/api/courses/claude/follow/route.test.ts",
     "seed": "node scripts/seed-fiq.mjs"
   },
   "engines": {
